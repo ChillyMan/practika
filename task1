@@ -1,0 +1,47 @@
+#include <iostream>
+using namespace std;
+ bool g;
+ int ns=0;
+void dfs(int v, int **Array, int n, int *Array1, int p)
+{
+    Array1[v] = 1;
+  
+    for (int i = 0; i < n; i++)
+    {  
+        if (Array[v][i] == 1 && i!=p )
+			if (Array1[i] == 0)
+				  {ns++;
+		dfs(i, Array, n, Array1, v);} else g = true;
+    }
+}
+ 
+int main()
+{
+   
+    int n;
+ 
+    cin >> n;
+
+    int **Array = new int *[n];
+ 
+    for (int i = 0; i < n; i++) 
+        Array[i] = new int [n];
+  
+    int *Array1 = new int [n];
+ 
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+            cin >> Array[i][j];
+ 
+        Array1[i] = 0;
+    }
+	
+ for(int i=0; i<n ; i++)
+	 if (!Array1[i])
+    dfs(i, Array, n, Array1, -1);
+  //cout << "\n" << ns << " " << n << "\n";
+    if (g || ns+1!=n) cout << "NO"; else cout <<  "YES";
+ 
+    return 0;
+} 
