@@ -1,0 +1,54 @@
+#include <iostream>
+using namespace std;
+int n,m;
+int i, j;
+int vvd[100];
+int vvd1[100];
+int GM[100][100];
+int it;
+ 
+void BFS(bool *visited, int unit)
+{
+ 
+int *queue=new int[n];
+int count, head;
+for (i=0; i<n; i++) queue[i]=0;
+count=0; head=0;
+queue[count++]=unit;
+visited[unit]=true;
+while (head<count)
+{
+unit=queue[head++];
+   
+for (i=0; i<n; i++)
+if (GM[unit][i] && !visited[i])
+{
+queue[count++]=i;
+vvd1[it]=i+1;
+vvd[it]=unit+1;
+    it++;
+visited[i]=true;
+}
+}
+delete []queue;
+}
+ 
+int main()
+{
+    int v1,v2;
+setlocale(LC_ALL, "Rus");
+int start=1;
+bool *visited=new bool[100];
+cin >> n >> m;
+ 
+for (i=0; i<n; i++)
+visited[i]=false;
+for (j=0; j<m; j++)
+    {cin >> v1 >> v2;
+GM[v2-1][v1-1]=GM[v1-1][v2-1]=1;
+}
+BFS(visited, start-1);
+for (int y=0; y<n-1; y++){
+    cout << vvd[y] << " " << vvd1[y]<< "\n";}
+ 
+}
