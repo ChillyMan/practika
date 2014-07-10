@@ -1,0 +1,183 @@
+#define N 100  
+#define M 10000
+#include<iostream>
+#include <stdlib.h>
+using namespace std;
+ 
+struct data{
+int name;
+int size;
+struct data *home;
+};
+typedef struct data mydata;
+ int Sum;
+class makeunionfind
+{
+public :
+ mydata S[N];
+public:
+makeunionfind(int n)
+{
+    for(int i=0;i<n;i++)
+    {
+       S[i].name=i+1;
+       S[i].size=0;
+       
+       S[i].home=&S[i];
+    }
+   
+}    
+   
+void myunion(int a, int b)
+{
+     int sizea,sizeb;
+     sizea=S[a-1].home->size;
+     sizeb=S[b-1].home->size;
+    if(sizea>sizeb)
+    {
+       (S[b-1].home)->home=S[a-1].home;
+       S[a-1].size=sizea+sizeb;
+       
+    }
+    else
+    {
+        (S[a-1].home)->home=S[b-1].home;
+        S[b-1].size=sizea+sizeb;
+       
+    }
+   
+}
+int myfind(int a)
+{
+    mydata *temp,*temp2,*stoppoint;
+    int result;
+    temp2=&S[a-1];
+    temp=S[a-1].home;
+    while(temp2!=temp)
+    {                        
+          temp2=temp;
+          temp=(*temp2).home;              
+    }
+    result=temp2->name;
+     stoppoint=temp2;
+       temp2=&S[a-1];
+ 
+     do{
+           temp=temp2->home;      
+           (*temp2).home=stoppoint;
+           temp2=temp;        
+     }while(temp2!=stoppoint);  
+     return result;                                    
+}
+};
+ 
+struct node{
+int name;
+};
+typedef struct node mynode;
+class edge
+{
+    public :
+    mynode *start,*end;
+    double cost;
+    edge()
+    {
+        start=NULL;
+        end=NULL;
+        cost=0;
+    }
+};
+struct edges{
+    edge e;
+};
+int compare(const void *a,const void *b )
+{
+    edge *a1,*b1;
+    a1=(edge*)a;
+    b1=(edge*)b;
+    if(a1->cost<b1->cost)
+        return -1;
+    else if (a1->cost>b1->cost){
+        Sum=Sum+b1->cost+a1->cost;
+        return 1;}
+    else
+    return 0;
+   
+}
+void *kruskal(edge *e,int n,int m,int *size,edge *ans)
+{
+    makeunionfind list(n);
+    int (*comp)(const void *a,const void *b );
+    int k=0;
+    comp=compare;
+    qsort((void*)e,m,sizeof(e[0]),comp);
+    for(int i=0;i<m;i++)
+    {
+        int s,f;
+        s=(e[i].start)->name;
+        f=(e[i].end)->name;
+       
+        if(list.myfind(s)==list.myfind(f))
+        {
+            continue;
+        }
+        else
+        {
+          list.myunion(s,f);
+          ans[k]=e[i];
+          k++;      
+        }
+   
+    }
+    *size=k;
+    return ans;    
+}
+int main()
+{
+    mynode nodes[N];
+    edge e[M];
+    int n,m; // n is the number of nodes , m is no. of nodes1
+    cin>>n;
+    for(int i=0;i<n;i++){
+    nodes[i].name=i+1;
+    }
+    int temp1,i,jj=0;
+    int mass1[100][100];
+    for (i=0;i<n;i++)
+        for(int k=0;k<n;k++)
+        {cin >> mass1[i][k];
+        if(i!=k){
+        int temp2;
+        double temp3;
+        temp1=i+1;
+        temp2=k+1;
+        temp3=mass1[i][k];
+        //cout << temp1 <<" - "<< temp2<<" - "<<temp3<<"\n";
+        e[jj].start=&nodes[temp1-1];
+        e[jj].end=&nodes[temp2-1];
+        e[jj].cost=temp3;jj++;
+        }
+   
+    }
+    //cout << jj;
+     m=jj;
+    // temp1 is starting node temp2 is ending node temp3 is cosr
+     
+   
+ 
+   
+     
+      edge ans[M];
+      int size;
+      kruskal(e,n,m,&size,ans);
+      Sum=0;
+      int gf;
+      for(int p=0;p<size;p++)
+      {
+      //   cout<<p+1<<")  start "<<(ans[p].start)->name<<"  end "<<(ans[p].end)->name<<endl;
+         Sum=Sum+ans[p].cost;
+      }
+      cout << Sum;
+     return 0;
+}
+ 
