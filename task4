@@ -1,0 +1,32 @@
+#include<iostream>
+using namespace std;
+ 
+ 
+int main(){
+    int cost[100][100];
+    int n;
+    int sv[100];
+    cin >> n;
+       
+    for(int i=0;i<n;i++)
+         for(int k=0;k<n;k++){
+             cin >> cost[i][k];
+             if(cost[i][k]==0)
+            cost[i][k]=9999;
+    }
+ 
+         for (int i=0;i<n;i++){
+         cin >> sv[i];
+         }
+         int jack=9999;
+         int vvd1,vvd2;
+         for (int i=0;i<n;i++){
+         if (sv[i]==0)
+             for (int k=0;k<n;k++)
+                 if(sv[k]==1)
+                if (jack>cost[i][k]) {jack=cost[i][k]; vvd1=i+1; vvd2=k+1;}
+         }
+ 
+               
+        cout << vvd1 << " " << vvd2;
+}
